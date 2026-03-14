@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GYM76 | TOTAL BALANCE OF THE BODY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e1e2e4;
+    --bg-dark: #111111;
+    --green: #00582d;
+    --green-light: #006b36;
+    --green-dark: #003d1f;
+    --gold: #b8972a;
+    --gold-light: #d4af37;
+    --white: #ffffff;
+    --gray: #e1e2e4;
+    --gray-mid: #c0c1c3;
+    --gray-dark: #6b6c6e;
+    --text: #1a1a1a;
+    --text-light: #4a4a4a;
+    --serif: 'Noto Serif JP', 'Yu Mincho', serif;
+    --sans: 'Noto Sans JP', sans-serif;
+    --display: 'Cormorant Garamond', serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--serif); overflow-x: hidden; padding-bottom: 72px; }
+
+  /* LOGO */
+  .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-circle {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--green); border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .logo-circle-text { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.02em; }
+  .logo-texts { line-height: 1; }
+  .logo-name { font-family: var(--sans); font-size: 22px; font-weight: 700; letter-spacing: 0.06em; }
+  .logo-name .gym { color: var(--green); }
+  .logo-name .num { color: var(--gold); }
+  .logo-sub { font-family: var(--display); font-size: 8px; letter-spacing: 0.28em; color: var(--gray-dark); text-transform: uppercase; margin-top: 3px; }
+  .logo-wrap.on-dark .logo-name .gym { color: var(--white); }
+  .logo-wrap.on-dark .logo-sub { color: rgba(255,255,255,0.4); }
+
+  /* UTIL */
+  .container { max-width: 900px; margin: 0 auto; }
+  .section-label { font-family: var(--display); font-size: 11px; letter-spacing: 0.38em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .section-title { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); font-weight: 400; color: var(--green); line-height: 1.6; margin-bottom: 8px; }
+  .section-sub { font-family: var(--sans); font-size: 13px; color: var(--text-light); font-weight: 300; line-height: 1.95; margin-bottom: 44px; }
+  .gold-line { width: 40px; height: 1px; background: var(--gold); margin: 14px 0 30px; }
+  .btn-primary { display: inline-block; background: var(--green); color: var(--white); padding: 15px 44px; font-family: var(--serif); font-size: 15px; letter-spacing: 0.12em; text-decoration: none; border: 1px solid var(--green); transition: all 0.3s; cursor: pointer; }
+  .btn-primary:hover { background: transparent; color: var(--green); }
+  .btn-gold { display: inline-block; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); color: var(--white); padding: 18px 56px; font-family: var(--serif); font-size: 16px; letter-spacing: 0.15em; text-decoration: none; transition: opacity 0.3s; cursor: pointer; box-shadow: 0 4px 20px rgba(184,151,42,0.3); }
+  .btn-gold:hover { opacity: 0.88; }
+
+  /* FIXED BANNER */
+  .fixed-banner { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--green-dark); z-index: 1000; border-top: 2px solid var(--gold); }
+  .fixed-banner-inner { display: flex; align-items: center; justify-content: space-between; max-width: 900px; margin: 0 auto; padding: 11px 20px; gap: 16px; }
+  .fixed-banner-text { color: var(--white); font-size: 13px; line-height: 1.4; font-family: var(--sans); }
+  .fixed-banner-text strong { color: var(--gold-light); font-size: 14px; display: block; }
+  .fixed-banner a { background: var(--gold); color: var(--white); padding: 10px 24px; font-family: var(--serif); font-size: 13px; letter-spacing: 0.1em; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: opacity 0.2s; }
+  .fixed-banner a:hover { opacity: 0.85; }
+
+  /* HEADER */
+  header { position: fixed; top: 0; width: 100%; z-index: 900; background: rgba(225,226,228,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,88,45,0.15); padding: 10px 20px; }
+  .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .header-tel { font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--text); text-decoration: none; letter-spacing: 0.05em; }
+  .header-tel span { font-family: var(--sans); font-size: 9px; color: var(--gray-dark); display: block; letter-spacing: 0.1em; }
+  .header-cta a { background: var(--green); color: var(--white); padding: 9px 20px; font-size: 12px; letter-spacing: 0.08em; text-decoration: none; font-family: var(--serif); transition: background 0.2s; }
+  .header-cta a:hover { background: var(--green-light); }
+
+  /* FV */
+  #fv { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; background: var(--bg-dark); position: relative; overflow: hidden; padding-top: 66px; }
+  .fv-overlay { position: absolute; inset: 0; background: linear-gradient(155deg, rgba(0,55,28,0.72) 0%, rgba(10,10,10,0.92) 70%); z-index: 1; }
+  .fv-grid { position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, rgba(184,151,42,0.04) 0, rgba(184,151,42,0.04) 1px, transparent 1px, transparent 80px), repeating-linear-gradient(0deg, rgba(184,151,42,0.04) 0, rgba(184,151,42,0.04) 1px, transparent 1px, transparent 80px); z-index: 1; }
+  /* Diagonal shapes referencing HP aesthetic */
+  .fv-shape { position: absolute; z-index: 1; }
+  .fv-shape-a { top: -100px; right: -100px; width: 440px; height: 440px; background: rgba(0,88,45,0.16); transform: rotate(30deg); }
+  .fv-shape-b { bottom: -80px; left: -80px; width: 320px; height: 320px; background: rgba(184,151,42,0.10); transform: rotate(18deg); }
+  .fv-bg-num { position: absolute; bottom: 20px; right: -10px; font-family: var(--sans); font-size: clamp(90px, 20vw, 200px); font-weight: 700; color: rgba(255,255,255,0.025); z-index: 1; line-height: 1; user-select: none; }
+  .fv-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 80px 20px 120px; width: 100%; }
+  .fv-eyebrow { font-family: var(--display); font-size: 11px; letter-spacing: 0.45em; color: var(--gold-light); text-transform: uppercase; margin-bottom: 28px; display: flex; align-items: center; gap: 14px; animation: fadeUp 0.8s ease 0.2s both; }
+  .fv-eyebrow::before { content: ''; width: 36px; height: 1px; background: var(--gold); }
+  .fv-main-en { font-family: var(--display); font-size: clamp(38px, 8vw, 76px); font-weight: 300; color: var(--white); line-height: 1.15; letter-spacing: 0.05em; animation: fadeUp 0.8s ease 0.35s both; }
+  .fv-main-en em { font-style: italic; color: var(--gold-light); }
+  .fv-divider { width: 56px; height: 1px; background: var(--gold); margin: 28px 0; animation: fadeUp 0.6s ease 0.55s both; }
+  .fv-main-ja { font-family: var(--serif); font-size: clamp(22px, 4vw, 34px); font-weight: 400; color: var(--white); line-height: 1.85; letter-spacing: 0.08em; margin-bottom: 14px; animation: fadeUp 0.8s ease 0.65s both; }
+  .fv-main-ja .accent { color: var(--gold-light); }
+  .fv-sub { font-family: var(--sans); font-size: 12px; color: rgba(255,255,255,0.48); letter-spacing: 0.14em; margin-bottom: 44px; animation: fadeUp 0.6s ease 0.8s both; }
+  #fv .btn-gold { animation: fadeUp 0.6s ease 0.95s both; }
+
+  /* BADGE ROW */
+  .badge-row { background: var(--white); padding: 22px 20px; border-bottom: 1px solid var(--gray); }
+  .badge-row-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; }
+  .badge-item { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 13px; color: var(--text); }
+  .badge-item strong { font-weight: 700; color: var(--green); }
+  .badge-sep { color: var(--gray-mid); font-size: 18px; }
+
+  /* REVIEWS */
+  #reviews { background: #f7f8f8; padding: 52px 20px; }
+  .reviews-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+  .reviews-en { font-family: var(--display); font-size: 11px; letter-spacing: 0.42em; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+  .reviews-stars { display: flex; align-items: center; justify-content: center; gap: 3px; margin-bottom: 8px; }
+  .star { color: #f5a623; font-size: 22px; }
+  .reviews-score { font-family: var(--display); font-size: 56px; color: var(--green); font-weight: 300; line-height: 1; }
+  .reviews-label { font-family: var(--sans); font-size: 12px; letter-spacing: 0.18em; color: var(--gray-dark); margin-top: 6px; }
+
+  /* CTA BLOCK */
+  .cta-block { padding: 56px 20px; text-align: center; background: var(--gray); }
+  .cta-block-inner { max-width: 540px; margin: 0 auto; }
+  .cta-block p { font-size: 14px; color: var(--text-light); margin-bottom: 28px; line-height: 1.95; font-family: var(--sans); }
+
+  /* TRAINER MESSAGE */
+  #message { background: var(--green-dark); padding: 80px 20px; }
+  .message-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .message-eyebrow { font-family: var(--display); font-size: 11px; letter-spacing: 0.35em; color: var(--gold-light); text-transform: uppercase; margin-bottom: 18px; }
+  .message-quote { font-family: var(--serif); font-size: clamp(14px, 2.2vw, 17px); color: var(--white); line-height: 2.3; font-weight: 300; border-left: 2px solid var(--gold); padding-left: 22px; margin-bottom: 28px; }
+  .trainer-name { font-family: var(--display); font-size: 20px; color: var(--gold-light); font-style: italic; }
+  .trainer-role { font-family: var(--sans); font-size: 11px; letter-spacing: 0.2em; color: var(--gray-mid); margin-top: 4px; }
+  .message-photo { background: linear-gradient(160deg, var(--green) 0%, var(--green-dark) 100%); aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .message-photo::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(184,151,42,0.06) 0, rgba(184,151,42,0.06) 1px, transparent 1px, transparent 18px); }
+  .message-photo-label { font-family: var(--display); font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.25em; text-align: center; line-height: 2.2; z-index: 1; }
+
+  /* FEATURES */
+  #features { background: var(--bg); padding: 80px 20px; }
+  .features-header { max-width: 900px; margin: 0 auto 52px; }
+  .features-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--gray-mid); }
+  .feature-card { background: var(--white); padding: 38px 32px; position: relative; overflow: hidden; transition: transform 0.2s; }
+  .feature-card:hover { transform: translateY(-2px); z-index: 1; box-shadow: 0 8px 28px rgba(0,0,0,0.09); }
+  .feature-card:nth-child(5) { grid-column: 1 / -1; }
+  .feature-num { font-family: var(--display); font-size: 62px; color: rgba(0,88,45,0.07); font-weight: 600; position: absolute; top: 12px; right: 14px; line-height: 1; }
+  /* Diagonal accent - HP inspired */
+  .feature-shape { position: absolute; bottom: -24px; right: -24px; width: 80px; height: 80px; background: rgba(0,88,45,0.055); transform: rotate(20deg); }
+  .feature-bar { width: 34px; height: 2px; background: var(--gold); margin-bottom: 16px; }
+  .feature-headline { font-family: var(--serif); font-size: 16px; color: var(--green); font-weight: 500; margin-bottom: 13px; line-height: 1.65; }
+  .feature-body { font-family: var(--sans); font-size: 13px; color: var(--text-light); line-height: 2.1; font-weight: 300; }
+
+  /* INTERIOR BANNER */
+  #interior-banner { background: var(--green); padding: 88px 20px; position: relative; overflow: hidden; text-align: center; }
+  .ib-shape { position: absolute; }
+  .ib-shape-1 { top: -70px; right: -70px; width: 320px; height: 320px; background: rgba(0,0,0,0.11); transform: rotate(28deg); }
+  .ib-shape-2 { bottom: -90px; left: -90px; width: 380px; height: 380px; background: rgba(0,0,0,0.07); transform: rotate(14deg); }
+  .ib-content { position: relative; z-index: 1; }
+  .ib-en { font-family: var(--display); font-size: clamp(28px, 6vw, 58px); color: rgba(255,255,255,0.11); font-weight: 300; letter-spacing: 0.1em; line-height: 1.2; margin-bottom: 18px; }
+  .ib-ja { font-family: var(--serif); font-size: clamp(20px, 3.5vw, 30px); color: var(--white); line-height: 1.9; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 40px; }
+  .ib-ja .accent { color: var(--gold-light); }
+
+  /* REASONS */
+  #reasons { background: var(--bg-dark); padding: 80px 20px; }
+  .reasons-header { max-width: 900px; margin: 0 auto 52px; }
+  .reasons-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+  .reason-item { background: rgba(255,255,255,0.04); border-left: 3px solid var(--gold); padding: 28px 34px; display: grid; grid-template-columns: 96px 1fr; gap: 26px; align-items: start; transition: background 0.2s; }
+  .reason-item:hover { background: rgba(255,255,255,0.07); }
+  .reason-num-block { text-align: center; }
+  .reason-num { font-family: var(--display); font-size: 44px; color: var(--gold); font-weight: 300; line-height: 1; display: block; }
+  .reason-num-label { font-family: var(--sans); font-size: 9px; letter-spacing: 0.25em; color: var(--gray-dark); text-transform: uppercase; }
+  .reason-headline { font-family: var(--serif); font-size: 17px; color: var(--white); font-weight: 400; margin-bottom: 10px; line-height: 1.7; }
+  .reason-body { font-family: var(--sans); font-size: 13px; color: var(--gray-mid); line-height: 2; font-weight: 300; }
+
+  /* PRICING */
+  #pricing { background: var(--bg); padding: 80px 20px; }
+  .campaign-box { max-width: 700px; margin: 0 auto 48px; border: 2px solid var(--gold); padding: 44px 36px; text-align: center; position: relative; background: var(--white); }
+  .campaign-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); color: var(--white); padding: 5px 28px; font-family: var(--sans); font-size: 12px; letter-spacing: 0.2em; white-space: nowrap; }
+  .campaign-title { font-family: var(--serif); font-size: 21px; color: var(--green); margin-bottom: 24px; font-weight: 500; }
+  .campaign-items { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .campaign-item { background: var(--green); color: var(--white); padding: 18px 26px; font-family: var(--serif); font-size: 14px; line-height: 1.85; text-align: center; min-width: 190px; }
+  .campaign-item .strike { text-decoration: line-through; color: rgba(255,255,255,0.42); font-size: 12px; font-family: var(--sans); }
+  .campaign-item .highlight { color: var(--gold-light); font-size: 20px; font-weight: 600; display: block; }
+  .campaign-note { font-family: var(--sans); font-size: 11px; color: var(--gray-dark); }
+  .pricing-tables { max-width: 900px; margin: 0 auto; }
+  .pricing-section-title { font-family: var(--serif); font-size: 18px; color: var(--green); margin: 40px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--gold); font-weight: 400; }
+  table.price-table { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 13px; margin-bottom: 8px; }
+  table.price-table th { background: var(--green); color: var(--white); padding: 12px 16px; text-align: left; font-weight: 400; letter-spacing: 0.05em; }
+  table.price-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-mid); background: var(--white); line-height: 1.6; }
+  table.price-table tr:hover td { background: rgba(0,88,45,0.025); }
+
+  /* FAQ */
+  #faq { background: var(--white); padding: 80px 20px; }
+  .faq-list { max-width: 800px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid var(--gray); }
+  .faq-q { display: flex; gap: 14px; padding: 22px 4px; cursor: pointer; align-items: flex-start; font-family: var(--serif); font-size: 15px; font-weight: 400; color: var(--text); }
+  .faq-q .q-mark { font-family: var(--display); font-size: 20px; color: var(--green); font-weight: 700; flex-shrink: 0; line-height: 1.3; }
+  .faq-q .q-text { flex: 1; line-height: 1.7; }
+  .faq-q .q-arrow { font-size: 14px; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; margin-left: 8px; margin-top: 3px; }
+  .faq-item.open .q-arrow { transform: rotate(180deg); }
+  .faq-a { display: none; padding: 0 4px 22px 34px; font-family: var(--sans); font-size: 13px; color: var(--text-light); line-height: 2; font-weight: 300; }
+  .faq-item.open .faq-a { display: block; }
+
+  /* VOICES */
+  #voices { background: var(--bg); padding: 80px 20px; }
+  .voices-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .voice-card { background: var(--white); padding: 30px 24px; position: relative; overflow: hidden; }
+  .voice-card::after { content: ''; position: absolute; bottom: -20px; right: -20px; width: 60px; height: 60px; background: rgba(0,88,45,0.05); transform: rotate(15deg); }
+  .voice-bar { width: 22px; height: 2px; background: var(--gold); margin-bottom: 13px; }
+  .voice-text { font-family: var(--serif); font-size: 14px; color: var(--text); line-height: 2.1; margin-bottom: 16px; }
+  .voice-name { font-family: var(--sans); font-size: 11px; color: var(--gray-dark); letter-spacing: 0.1em; }
+
+  /* RESERVATION */
+  #reservation { background: var(--green-dark); padding: 80px 20px; }
+  .reservation-inner { max-width: 800px; margin: 0 auto; }
+  .reservation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 36px; }
+  .contact-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(184,151,42,0.28); padding: 28px 24px; }
+  .contact-box-icon { font-size: 24px; margin-bottom: 10px; }
+  .contact-box-title { font-family: var(--serif); font-size: 16px; color: var(--white); margin-bottom: 8px; font-weight: 400; }
+  .contact-box-info { font-family: var(--sans); font-size: 13px; color: var(--gray-mid); line-height: 1.75; margin-bottom: 14px; font-weight: 300; }
+  .btn-contact { display: inline-block; border: 1px solid var(--gold); color: var(--gold-light); padding: 9px 22px; font-family: var(--sans); font-size: 12px; letter-spacing: 0.1em; text-decoration: none; transition: all 0.2s; }
+  .btn-contact:hover { background: var(--gold); color: var(--white); }
+  .reservation-form-box { background: var(--white); padding: 40px; }
+  .form-title { font-family: var(--serif); font-size: 18px; color: var(--green); margin-bottom: 8px; font-weight: 400; }
+  .form-program { background: var(--green); color: var(--white); padding: 11px 16px; font-family: var(--sans); font-size: 13px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+  .form-program span { color: var(--gold-light); font-weight: 500; }
+  .form-group { margin-bottom: 17px; }
+  .form-group label { display: block; font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; color: var(--gray-dark); margin-bottom: 7px; font-weight: 500; }
+  .form-group label .req { color: var(--gold); margin-left: 3px; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; border: 1px solid var(--gray-mid); padding: 11px 14px; font-family: var(--sans); font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; appearance: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-submit { width: 100%; background: var(--green); color: var(--white); border: none; padding: 18px; font-family: var(--serif); font-size: 16px; letter-spacing: 0.15em; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+  .form-submit:hover { background: var(--green-light); }
+  .form-note { font-family: var(--sans); font-size: 11px; color: var(--gray-dark); line-height: 1.9; margin-top: 14px; text-align: center; }
+
+  /* ACCESS */
+  #access { background: var(--bg); padding: 80px 20px; }
+  .access-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .access-row { display: grid; grid-template-columns: 70px 1fr; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--gray-mid); font-family: var(--sans); font-size: 13px; }
+  .access-row dt { color: var(--gray-dark); font-size: 11px; letter-spacing: 0.1em; padding-top: 2px; }
+  .access-row dd { color: var(--text); line-height: 1.7; font-weight: 300; }
+  .map-wrap { aspect-ratio: 4/3; background: var(--gray-mid); overflow: hidden; }
+  .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  /* FOOTER */
+  footer { background: var(--bg-dark); padding: 52px 20px 32px; }
+  .footer-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; }
+  .footer-info { font-family: var(--sans); font-size: 12px; color: var(--gray-dark); line-height: 2.1; }
+  .footer-info a { color: var(--gray-dark); text-decoration: none; }
+  .footer-copy { max-width: 900px; margin: 28px auto 0; font-family: var(--sans); font-size: 11px; color: rgba(255,255,255,0.18); letter-spacing: 0.1em; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px; text-align: center; }
+
+  /* ANIM */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .message-inner { grid-template-columns: 1fr; }
+    .message-photo { aspect-ratio: 16/9; order: -1; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feature-card:nth-child(5) { grid-column: 1; }
+    .reason-item { grid-template-columns: 56px 1fr; gap: 14px; }
+    .voices-grid { grid-template-columns: 1fr; }
+    .reservation-grid { grid-template-columns: 1fr; }
+    .access-grid { grid-template-columns: 1fr; }
+    .form-row, .form-time-grid { grid-template-columns: 1fr; }
+    .campaign-items { flex-direction: column; align-items: center; }
+    .fixed-banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
+    .fixed-banner a { text-align: center; }
+    .footer-inner { flex-direction: column; }
+    .header-tel { display: none; }
+    .badge-sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#fv" class="logo-wrap">
+      <div class="logo-circle"><span class="logo-circle-text">76</span></div>
+      <div class="logo-texts">
+        <div class="logo-name"><span class="gym">GYM</span><span class="num">76</span></div>
+        <div class="logo-sub">Total Balance of the Body</div>
+      </div>
+    </a>
+    <div class="header-right">
+      <a href="tel:0529827676" class="header-tel">
+        052-982-7676
+        <span>営業時間 10:00〜22:00</span>
+      </a>
+      <div class="header-cta"><a href="#reservation">予約フォーム →</a></div>
+    </div>
+  </div>
+</header>
+
+<!-- FV -->
+<section id="fv">
+  <div class="fv-overlay"></div>
+  <div class="fv-grid"></div>
+  <div class="fv-shape fv-shape-a"></div>
+  <div class="fv-shape fv-shape-b"></div>
+  <div class="fv-bg-num">76</div>
+  <div class="fv-content">
+    <div class="fv-eyebrow">Personal Training Gym · Nagoya Takaoka</div>
+    <div class="fv-main-en">TOTAL <em>BALANCE</em><br>OF THE BODY</div>
+    <div class="fv-divider"></div>
+    <div class="fv-main-ja">最高の環境で<br><span class="accent">最高の自分</span>を手に入れる</div>
+    <div class="fv-sub">名古屋・高岳エリア パーソナルトレーニングジム</div>
+    <a href="#reservation" class="btn-gold">無料体験を予約する →</a>
+  </div>
+</section>
+
+<!-- BADGE ROW -->
+<div class="badge-row">
+  <div class="badge-row-inner">
+    <div class="badge-item">🏆&ensp;<strong>名古屋エリアNo.1</strong>の環境</div>
+    <span class="badge-sep">|</span>
+    <div class="badge-item">🅿️&ensp;<strong>無料駐車場</strong>完備</div>
+    <span class="badge-sep">|</span>
+    <div class="badge-item">👕&ensp;<strong>手ぶら</strong>でOK</div>
+    <span class="badge-sep">|</span>
+    <div class="badge-item">⭐&ensp;Google評価 <strong>4.9</strong></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-en">Google Reviews</div>
+    <div class="reviews-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+    <div class="reviews-score">4.9</div>
+    <div class="reviews-label">多くのお客様から高評価をいただいております</div>
+  </div>
+</section>
+
+<!-- CTA 1 -->
+<div class="cta-block">
+  <div class="cta-block-inner">
+    <p>まずは一度、GYM76の環境を体験してください。<br>あなたの「変わりたい」という気持ちに、全力でお応えします。</p>
+    <a href="#reservation" class="btn-primary">空き状況をチェック →</a>
+  </div>
+</div>
+
+<!-- TRAINER MESSAGE -->
+<section id="message">
+  <div class="message-inner">
+    <div>
+      <div class="message-eyebrow">Trainer's Message</div>
+      <blockquote class="message-quote">
+        お客様の『変わりたい』という想いに全力で応えることが、私のトレーナーとしての使命です。<br><br>
+        身体が変わる事で、人生が変わる瞬間を何度も見てきました。<br><br>
+        その感動を、これからも一人でも多くの方と共有していきます。
+      </blockquote>
+      <div class="trainer-name">GYM76 Trainer</div>
+      <div class="trainer-role">パーソナルトレーナー</div>
+    </div>
+    <div class="message-photo">
+      <div class="message-photo-label">TRAINER<br>PHOTO<br>HERE</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="features-header container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">GYM76の特徴</h2>
+    <div class="gold-line"></div>
+    <p class="section-sub">充実した環境と設備で、圧倒的な継続率を実現します。</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-num">01</div><div class="feature-shape"></div>
+      <div class="feature-bar"></div>
+      <div class="feature-headline">続かない人ほど、結果が出る。</div>
+      <div class="feature-body">GYM76は、「運動が苦手」「過去に挫折した」そんな人のためのパーソナルジムです。<br><br>9割の方がトレーニング初心者。女性も男性も幅広い年代の方にご利用いただいております。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">02</div><div class="feature-shape"></div>
+      <div class="feature-bar"></div>
+      <div class="feature-headline">トレーニングを充実した環境で。</div>
+      <div class="feature-body">ウェアも、シューズも、ドリンクも全て提供。<br><br>トレーニングに集中できる環境を整えました。手ぶらで来て、全力でトレーニングできます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">03</div><div class="feature-shape"></div>
+      <div class="feature-bar"></div>
+      <div class="feature-headline">高岳エリアでは珍しい、無料駐車場完備。</div>
+      <div class="feature-body">周辺コインパーキングを探す必要なし。<br><br>車で来て、すぐトレーニング。忙しい方ほど、違いを実感できます。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">04</div><div class="feature-shape"></div>
+      <div class="feature-bar"></div>
+      <div class="feature-headline">ストレスフリーなダイエット指導</div>
+      <div class="feature-body">ストレスはダイエットにおいて天敵です。<br><br>お客様のライフスタイルに合わせた食事管理サポートで、内側から身体を変えていきましょう。</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">05</div><div class="feature-shape"></div>
+      <div class="feature-bar"></div>
+      <div class="feature-headline">有酸素マシン2台完備</div>
+      <div class="feature-body">トレーニング後に1時間有酸素マシンを無料で使用できます。<br><br>リフレッシュやダイエットにぜひ活用ください。</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERIOR BANNER -->
+<section id="interior-banner">
+  <div class="ib-shape ib-shape-1"></div><div class="ib-shape ib-shape-2"></div>
+  <div class="ib-content">
+    <div class="ib-en">TOTAL BALANCE OF THE BODY</div>
+    <div class="ib-ja">最高の環境で<br><span class="accent">最高の自分</span>を手に入れる</div>
+    <a href="#reservation" class="btn-gold">空き状況をチェック →</a>
+  </div>
+</section>
+
+<!-- REASONS -->
+<section id="reasons">
+  <div class="reasons-header container">
+    <div class="section-label">Why GYM76</div>
+    <h2 class="section-title" style="color:var(--white)">GYM76が選ばれる理由</h2>
+    <div class="gold-line"></div>
+    <p class="section-sub" style="color:var(--gray-mid)">名古屋エリアトップの環境。充実した設備で圧倒的な継続率を実現します。</p>
+  </div>
+  <div class="reasons-list">
+    <div class="reason-item">
+      <div class="reason-num-block"><span class="reason-num">01</span><span class="reason-num-label">Reason</span></div>
+      <div><div class="reason-headline">名古屋エリアトップの環境。</div><div class="reason-body">GYM76では環境が自分自身を変える大きな理由の一つと考えています。環境が変われば思考が変わる。自然と自分と向き合うことができ、理想の身体を手に入れることができます。</div></div>
+    </div>
+    <div class="reason-item">
+      <div class="reason-num-block"><span class="reason-num">02</span><span class="reason-num-label">Reason</span></div>
+      <div><div class="reason-headline">充実した環境と設備で圧倒的な継続率。</div><div class="reason-body">ウェア・シューズ・タオル・プロテイン・ドリンクなど全て提供。手ぶらでOK。GYM76の環境が、あなたの継続をサポートします。</div></div>
+    </div>
+    <div class="reason-item">
+      <div class="reason-num-block"><span class="reason-num">03</span><span class="reason-num-label">Reason</span></div>
+      <div><div class="reason-headline">9割がトレーニング初心者。</div><div class="reason-body">「運動が苦手」「過去に挫折した」そんな方こそGYM76へ。女性も男性も幅広い年代の方が、楽しくトレーニングを継続しています。</div></div>
+    </div>
+    <div class="reason-item">
+      <div class="reason-num-block"><span class="reason-num">04</span><span class="reason-num-label">Reason</span></div>
+      <div><div class="reason-headline">お客様に寄り添ったサポート体制。</div><div class="reason-body">Inbodyでの測定・姿勢評価をもとに、お客様一人ひとりに合ったトレーニングと食事管理をご提供。ライフスタイルに合わせた無理のないプログラムで、着実に理想の身体へ。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA 2 -->
+<div class="cta-block" style="background:var(--white)">
+  <div class="cta-block-inner">
+    <p>まずは体験トレーニングから。<br>約90分で、GYM76の環境とトレーニングを実感してください。</p>
+    <a href="#reservation" class="btn-primary">空き状況をチェック →</a>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container" style="margin-bottom:40px;">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">よくある質問</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="q-mark">Q</span><span class="q-text">体験トレーニングでは何を行いますか？</span><span class="q-arrow">▾</span></div><div class="faq-a">30分のカウンセリング、55分のトレーニング、計約90分のお時間をいただいております。Inbodyでの測定、姿勢評価などを行い、お客様に合わせたトレーニングを体験していただきます。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="q-mark">Q</span><span class="q-text">体験トレーニング当日は、何を持って行けば良いですか？</span><span class="q-arrow">▾</span></div><div class="faq-a">GYM76ではトレーニングウェアやシューズ、タオル、プロテイン、ドリンクなどを全てご提供させていただきますので、<strong>手ぶらでお越しいただくことができます。</strong></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="q-mark">Q</span><span class="q-text">体験トレーニングの料金はいくらですか？</span><span class="q-arrow">▾</span></div><div class="faq-a">体験トレーニングの料金は、<strong>3,000円（税込）</strong>です。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="q-mark">Q</span><span class="q-text">入会金はいくらですか？</span><span class="q-arrow">▾</span></div><div class="faq-a">入会金は<strong>20,000円（税込）</strong>になります。会員様からのご紹介で入会いただく場合は、入会金が無料となります。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="q-mark">Q</span><span class="q-text">料金の支払い方法にはどのような種類がありますか？</span><span class="q-arrow">▾</span></div><div class="faq-a">現金・クレジットカード・QRコード決済・電子マネーなど、様々なお支払い方法でご対応しております。</div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container" style="margin-bottom:40px;">
+    <div class="section-label">Campaign &amp; Pricing</div>
+    <h2 class="section-title">料金プラン</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="campaign-box">
+    <div class="campaign-badge">＜キャンペーン実施中＞</div>
+    <div class="campaign-title">当日入会限定 特別特典</div>
+    <div class="campaign-items">
+      <div class="campaign-item"><span class="strike">体験料 3,000円</span><span class="highlight">全額キャッシュバック</span>当日ご入会で体験料が返金！</div>
+      <div class="campaign-item"><span class="strike">入会金 20,000円</span><span class="highlight">→ 完全無料！</span>当日ご入会で入会金が0円に！</div>
+    </div>
+    <div class="campaign-note">※当日ご入会のお客様に限ります。</div>
+  </div>
+  <div class="pricing-tables">
+    <div class="pricing-section-title">回数券プラン</div>
+    <table class="price-table"><thead><tr><th>プラン</th><th>内容</th><th>料金（税込）</th></tr></thead><tbody>
+      <tr><td>回数券 10回</td><td>有効期限3ヶ月・55分/回</td><td>¥55,000</td></tr>
+      <tr><td>回数券 20回</td><td>有効期限6ヶ月・55分/回</td><td>¥99,000</td></tr>
+      <tr><td>回数券 30回</td><td>有効期限12ヶ月・55分/回</td><td>¥132,000</td></tr>
+    </tbody></table>
+    <div class="pricing-section-title">法人回数券プラン</div>
+    <table class="price-table"><thead><tr><th>プラン</th><th>内容</th><th>料金（税込）</th></tr></thead><tbody>
+      <tr><td>法人回数券 10回</td><td>複数名でシェア可・有効期限3ヶ月</td><td>¥60,000</td></tr>
+      <tr><td>法人回数券 20回</td><td>複数名でシェア可・有効期限6ヶ月</td><td>¥110,000</td></tr>
+      <tr><td>法人回数券 30回</td><td>複数名でシェア可・有効期限12ヶ月</td><td>¥150,000</td></tr>
+    </tbody></table>
+    <div class="pricing-section-title">ライフサポートプラン</div>
+    <table class="price-table"><thead><tr><th>プラン</th><th>内容</th><th>料金（税込）</th></tr></thead><tbody>
+      <tr><td>ライフサポート 月4回</td><td>月4回・食事指導込み</td><td>¥22,000/月</td></tr>
+      <tr><td>ライフサポート 月8回</td><td>月8回・食事指導込み</td><td>¥38,000/月</td></tr>
+      <tr><td>ライフサポート 月12回</td><td>月12回・食事指導込み</td><td>¥52,000/月</td></tr>
+    </tbody></table>
+    <p style="font-family:var(--sans);font-size:11px;color:var(--gray-dark);text-align:right;margin-top:-10px;">※詳細は<a href="https://gym76.com/plan-3" target="_blank" style="color:var(--green)">公式HP（料金ページ）</a>をご確認ください。</p>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section id="voices">
+  <div class="container" style="margin-bottom:48px;">
+    <div class="section-label">Testimonials</div>
+    <h2 class="section-title">お客様の声</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="voices-grid">
+    <div class="voice-card"><div class="voice-bar"></div><div class="voice-text">-20kgのダイエットの成功しました。今でもトレーニング継続しており、楽しくトレーニングができております。</div><div class="voice-name">40代／女性／K様</div></div>
+    <div class="voice-card"><div class="voice-bar"></div><div class="voice-text">トレーニングを始めて見た目が大きく変わりました。特にヒップの位置は上がってとても満足しています。</div><div class="voice-name">30代／女性／S様</div></div>
+    <div class="voice-card"><div class="voice-bar"></div><div class="voice-text">今まで運動をしてこなかった私がトレーニングを始めて、ダイエットに成功し、今でもトレーニングが習慣になっています。</div><div class="voice-name">40代／男性／H様</div></div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation">
+  <div class="reservation-inner">
+    <div class="section-label">Free Trial</div>
+    <h2 class="section-title" style="color:var(--white)">無料体験予約</h2>
+    <div class="gold-line"></div>
+    <p class="section-sub" style="color:var(--gray-mid)">無料体験のご予約は、下記3つの方法からお選びいただけます。<br>※本体験はご入会をご検討中のお客様を対象としております。同業の方による視察目的などの体験はご遠慮ください。万が一そのような利用が確認された場合には、然るべき対応を取らせていただく場合がございます。</p>
+    <div class="reservation-grid">
+      <div class="contact-box">
+        <div class="contact-box-icon">💬</div>
+        <div class="contact-box-title">公式LINEで予約</div>
+        <div class="contact-box-info">LINEからお気軽にご予約・お問い合わせいただけます。</div>
+        <a href="https://page.line.me/786bvuxw?oat_content=url&openQrModal=true" target="_blank" class="btn-contact">LINEで予約する →</a>
+      </div>
+      <div class="contact-box">
+        <div class="contact-box-icon">📞</div>
+        <div class="contact-box-title">お電話で予約</div>
+        <div class="contact-box-info"><a href="tel:0529827676" style="color:var(--white);font-family:var(--display);font-size:22px;font-weight:600;text-decoration:none;">052-982-7676</a><br>営業時間：10:00〜22:00</div>
+        <a href="tel:0529827676" class="btn-contact">電話で予約する →</a>
+      </div>
+    </div>
+    <div class="reservation-form-box">
+      <div class="form-title">予約フォームで予約</div>
+      <div class="form-program">プログラム：<span>初回体験プログラム（90分）【3,000円】</span></div>
+      <form onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group"><label>お名前<span class="req">*</span></label><input type="text" placeholder="山田 太郎" required></div>
+          <div class="form-group"><label>フリガナ<span class="req">*</span></label><input type="text" placeholder="ヤマダ タロウ" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>電話番号<span class="req">*</span></label><input type="tel" placeholder="090-0000-0000" required></div>
+          <div class="form-group"><label>メールアドレス<span class="req">*</span></label><input type="email" placeholder="mail@example.com" required></div>
+        </div>
+        <div class="form-time-grid">
+          <div class="form-group"><label>ご希望日<span class="req">*</span></label><input type="date" required></div>
+          <div class="form-group"><label>ご希望時間<span class="req">*</span></label>
+            <select required>
+              <option value="">時間を選択</option>
+              <option>9:00〜</option><option>10:00〜</option><option>11:00〜</option><option>12:00〜</option>
+              <option>13:00〜</option><option>14:00〜</option><option>15:00〜</option><option>16:00〜</option>
+              <option>17:00〜</option><option>18:00〜</option><option>19:00〜</option><option>20:00〜</option>
+              <option>21:00〜</option><option>22:00〜</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>ご要望・ご質問（任意）</label><textarea rows="3" placeholder="お気軽にご記入ください"></textarea></div>
+        <button type="submit" class="form-submit">予約を申し込む</button>
+        <div class="form-note">ご入力いただいた個人情報は、予約確認のご連絡にのみ使用いたします。<br>ご予約後、担当よりご連絡いたします。</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section id="access">
+  <div class="access-grid">
+    <div>
+      <div class="section-label">Access</div>
+      <h2 class="section-title">アクセス</h2>
+      <div class="gold-line"></div>
+      <dl>
+        <div class="access-row"><dt>店舗名</dt><dd>GYM76</dd></div>
+        <div class="access-row"><dt>住所</dt><dd>〒461-0004<br>愛知県名古屋市東区葵2丁目1-30</dd></div>
+        <div class="access-row"><dt>電話</dt><dd><a href="tel:0529827676" style="color:var(--green);text-decoration:none">052-982-7676</a></dd></div>
+        <div class="access-row"><dt>営業時間</dt><dd>10:00〜22:00（定休日なし）</dd></div>
+        <div class="access-row"><dt>最寄り駅</dt><dd>高岳駅徒歩7分（東片端交差点南東すぐ）</dd></div>
+        <div class="access-row"><dt>駐車場</dt><dd>無料駐車場3台完備</dd></div>
+        <div class="access-row"><dt>公式HP</dt><dd><a href="https://gym76.com" target="_blank" style="color:var(--green);text-decoration:none">gym76.com</a></dd></div>
+      </dl>
+    </div>
+    <div class="map-wrap">
+      <iframe src="https://maps.google.com/maps?q=愛知県名古屋市東区葵2丁目1-30&output=embed" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a href="#fv" class="logo-wrap on-dark">
+        <div class="logo-circle"><span class="logo-circle-text">76</span></div>
+        <div class="logo-texts">
+          <div class="logo-name"><span class="gym">GYM</span><span class="num">76</span></div>
+          <div class="logo-sub">Total Balance of the Body</div>
+        </div>
+      </a>
+    </div>
+    <div class="footer-info">
+      住所：〒461-0004 愛知県名古屋市東区葵2丁目1-30<br>
+      <a href="tel:0529827676">Tel: 052-982-7676</a><br>
+      営業時間：10:00〜22:00（定休日なし）<br>
+      最寄駅：高岳駅徒歩7分 ／ 無料駐車場3台
+    </div>
+  </div>
+  <div class="footer-copy">© 2025 GYM76 All Rights Reserved.</div>
+</footer>
+
+<!-- FIXED BOTTOM BANNER -->
+<div class="fixed-banner">
+  <div class="fixed-banner-inner">
+    <div class="fixed-banner-text">
+      <strong>＜キャンペーン実施中＞当日入会で3,000円キャッシュバック＋入会金20,000円 → 無料！</strong>
+      まずは無料体験から。お気軽にご予約ください。
+    </div>
+    <a href="#reservation">空き状況をチェック</a>
+  </div>
+</div>
+
+<script>
+  function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+  function submitForm(e) { e.preventDefault(); alert('ご予約ありがとうございます。担当よりご連絡いたします。'); }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const t = document.querySelector(this.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
